@@ -14,7 +14,11 @@ const userList = new Array(20)
 const getList = ({ page = 1, pagination = 5 }) =>
   new Promise((resolve) => {
     setTimeout(() => {
-      resolve(userList.slice((page - 1) * pagination, page * pagination))
+      resolve({
+        page,
+        totalPages: userList.length / pagination,
+        items: userList.slice((page - 1) * pagination, page * pagination),
+      })
     }, 1500)
   })
 

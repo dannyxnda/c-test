@@ -12,7 +12,7 @@ import {
   withStyles,
   Paper,
 } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton, Pagination } from '@material-ui/lab'
 
 import * as mockApi from '../../mockApi'
 
@@ -23,7 +23,11 @@ const TableData = ({ classes, history, location }) => {
   const { page, pagination } = qs.parse(location.search)
 
   const [loading, setLoading] = useState(false)
-  const [list, setList] = useState([])
+  const [data, setData] = useState({
+    page: 1,
+    totalPages: 1,
+    items: [],
+  })
   const skeleton = new Array(Number(pagination) || 5)
     .fill(true)
     .map((item, i) => ({
@@ -40,7 +44,7 @@ const TableData = ({ classes, history, location }) => {
         page: page ? Number(page) : 1,
         pagination: pagination ? Number(pagination) : 5,
       })
-      .then((res) => setList(res))
+      .then((res) => setData(res))
       .catch((e) => {})
       .finally(() => setLoading(false))
   }, [page, pagination])
@@ -57,18 +61,19 @@ const TableData = ({ classes, history, location }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(loading ? skeleton : list).map((row) => (
-              <TableRow key={row.id}>
+            {(loading ? skeleton : data.items).map((item) => (
+              <TableRow key={item.id}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {item.name}
                 </TableCell>
-                <TableCell align="right">{row.email}</TableCell>
-                <TableCell align="right">{row.position}</TableCell>
+                <TableCell align="right">{item.email}</TableCell>
+                <TableCell align="right">{item.position}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Pagination count={data.totalPages} />
     </PageContainer>
   )
 }
