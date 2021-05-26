@@ -17,18 +17,21 @@ import { Skeleton } from '@material-ui/lab'
 import * as mockApi from '../../mockApi'
 
 import style from './style'
+import PageContainer from '../../components/PageContainer'
 
 const TableData = ({ classes, history, location }) => {
   const { page, pagination } = qs.parse(location.search)
 
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
-  const skeleton = new Array(Number(pagination)).fill(true).map((item, i) => ({
-    id: i,
-    name: <Skeleton width={`${Math.floor(Math.random() * 51 + 50)}%`} />,
-    email: <Skeleton width={`${Math.floor(Math.random() * 51 + 50)}%`} />,
-    position: <Skeleton width={`${Math.floor(Math.random() * 51 + 50)}%`} />,
-  }))
+  const skeleton = new Array(Number(pagination) || 5)
+    .fill(true)
+    .map((item, i) => ({
+      id: i,
+      name: <Skeleton width={`${Math.floor(Math.random() * 51 + 50)}%`} />,
+      email: <Skeleton width={`${Math.floor(Math.random() * 51 + 50)}%`} />,
+      position: <Skeleton width={`${Math.floor(Math.random() * 51 + 50)}%`} />,
+    }))
 
   useEffect(() => {
     setLoading(true)
@@ -43,28 +46,30 @@ const TableData = ({ classes, history, location }) => {
   }, [page, pagination])
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Position</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(loading ? skeleton : list).map((row) => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.email}</TableCell>
-              <TableCell align="right">{row.position}</TableCell>
+    <PageContainer>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Email</TableCell>
+              <TableCell align="right">Position</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {(loading ? skeleton : list).map((row) => (
+              <TableRow key={row.id}>
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.email}</TableCell>
+                <TableCell align="right">{row.position}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </PageContainer>
   )
 }
 

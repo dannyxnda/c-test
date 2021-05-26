@@ -7,7 +7,7 @@ const userList = new Array(20)
   .map((u, i) => ({
     id: Math.random().toString().replace(/\d\./, ''),
     name: u.name.concat('_', i),
-    email: 'mail'.concat('_', u.email),
+    email: 'mail'.concat('_', i, u.email),
     position: u.position,
   }))
 
