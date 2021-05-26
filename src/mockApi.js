@@ -1,13 +1,13 @@
 const userList = new Array(20)
   .fill({
-    name: 'Annie',
-    email: 'annie@gmail.com',
+    name: 'Danny',
+    email: 'danny@gmail.com',
     position: 'Developer',
   })
   .map((u, i) => ({
     id: Math.random().toString().replace(/\d\./, ''),
     name: u.name.concat('_', i),
-    email: 'mail'.concat('_', i, u.email),
+    email: 'mail'.concat(u.email, '_', i),
     position: u.position,
   }))
 
@@ -16,10 +16,10 @@ const getList = ({ page = 1, pagination = 5 }) =>
     setTimeout(() => {
       resolve({
         page,
-        totalPages: userList.length / pagination,
+        totalPages: Math.ceil(userList.length / pagination),
         items: userList.slice((page - 1) * pagination, page * pagination),
       })
-    }, 1500)
+    }, 600)
   })
 
 const addUser = (userinfo) =>
@@ -28,20 +28,19 @@ const addUser = (userinfo) =>
       const { name, email, position } = userinfo
       if (!name || !email || !position) {
         reject('Not enough info to create user!')
-      }
-      if (userList.some((u) => u.email === email)) {
+      } else if (userList.some((u) => u.email === email)) {
         reject('Email is existed!')
+      } else {
+        const newUser = {
+          id: Math.random().toString().replace(/\d\./, ''),
+          name,
+          email,
+          position,
+        }
+        userList.push(newUser)
+        resolve(newUser)
       }
-
-      const newUser = {
-        id: Math.random().toString().replace(/\d\./, ''),
-        name,
-        email,
-        position,
-      }
-      userList.push(newUser)
-      resolve(newUser)
-    }, 1500)
+    }, 600)
   })
 
 export { getList, addUser }

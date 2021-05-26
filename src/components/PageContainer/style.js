@@ -1,10 +1,10 @@
-const style = () => ({
-  PageContainer: {
+const style = (theme) => ({
+  PageContainer: {},
+  header: {
     display: 'flex',
-    justifyContent: 'center',
-  },
-  PageCard: {
-    width: 'clamp(500px, 80%, 1000px)',
+    alignItems: 'center',
+    height: theme.spacing(14),
+    padding: theme.spacing(0, 5),
   },
 })
 
