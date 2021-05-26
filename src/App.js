@@ -8,7 +8,7 @@ import Table from './pages/Table'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Switch>
         <Route exact path="/count" component={Count} />
         <Route exact path="/table" component={Table} />
